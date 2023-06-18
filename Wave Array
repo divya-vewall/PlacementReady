@@ -1,0 +1,36 @@
+Given an unsorted array of integers, sort the array into a wave array. An array arr[0..n-1] is sorted in wave form if: arr[0] >= arr[1] <= arr[2] >= arr[3] <= arr[4] >= …..
+
+arr = 10 5 6 3 2 20 100 80       output = 10 5 6 2 20 3 100 80
+1st approach  
+--- Sort the array   2 3 5 6 10 20 80 100
+--- traverse array from 0 to n-1 and increment the index by 2
+--- while traversing swap all adjacent elements arr[i] & arr[i+1]
+time complexity - O(n*logn)
+
+Efficient appraoach 
+Traverse all even positioned elements of the input array, and do the following. 
+If the current element is smaller than the previous odd element, swap the previous and current. 
+If the current element is smaller than the next odd element, swap next and current.
+
+class Solution {
+    public static void swap(int[] a, int i, int j){
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+    public static void convertToWave(int n, int[] a) {
+        // code here
+        for(int i =0; i < n-1; i+= 2){
+            if(i > 0 && a[i-1] > a[i]){
+                swap(a, i-1, i);
+            }
+            
+            if(i < n-1 && a[i+1]>a[i]){
+                swap(a, i, i+1);
+            }
+        }
+    }
+}
+
+Time Complexity = O(n)
+space complexity - O(1)

@@ -1,0 +1,36 @@
+Arr = -2  -3  4  -1  -2  1  5  -3
+max contiguous subarray sum = 4 + (-1) + (-2) + 1 + 5  = 7 
+
+1st approach --
+Time Complexity - O(N)   Space compexity - O(1)
+_________________________________________________
+  Iniialize two variables sumSoFar which is intialized to Integer.MIN_VALUE (-infinity) and maxEnd which is intialized to zero
+  traverse the array from 0to n and keep add arr[i] to maxEnd ( maxEnd = maxEnd + arr[i])
+  if maxSoFar < maxEnd then we update the value of maxSoFar (maxSoFar = maxEnd)
+  and if maxEnd is leass than zero ( maxEnd < 0) then we update maxEnd to zero ( maxEnd = 0) 
+  at last we return maxSoFar.
+
+class Solution{
+
+    // arr: input array
+    // n: size of array
+    //Function to find the sum of contiguous subarray with maximum sum.
+    long maxSubarraySum(int arr[], int n){
+        
+        // Your code here
+        long maxSoFar = Integer.MIN_VALUE;
+        long maxEnd = 0;
+        
+        for(int i = 0; i < n; i++){
+            maxEnd += arr[i];
+            if(maxSoFar < maxEnd){
+                maxSoFar = maxEnd;
+            }
+            if(maxEnd < 0){
+                maxEnd = 0;
+            }
+        }
+        return maxSoFar; 
+        
+    }    
+}

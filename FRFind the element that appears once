@@ -1,0 +1,67 @@
+let us suppose array elements are repeating three times except one element we have to find that one element
+-------------------------------------------------------------------------------------------------------------------------
+Expected time and space complexity are O(n) and O(1) respectively.
+
+arr[] = { 12, 1, 12, 3, 12 , 1, 1, 2, 3, 3} for this array output will be 2 as all the elements except 2 are aappearing twice
+----we can use sorting to do it which takes O(nlogn) time complexity and we can also use hashing its worst time complexity is O(n) but consists of extra space
+----so we use concepts of bitwise operators which takes O(n) time and O(1) space 
+
+* Run a loop for all the elemnts in arra
+* maintain two values ones and twos
+*ones : bits that have appeared 1st time, 4th ime or 7th time.......
+* twos: bits that have appeared 2nd time or 5th time or 8th time......
+* then finally we return ones
+how to maintain values of ones and twos 
+--ones and twos are initialized to zero
+for every new element in array find out common set bits in the new eements and previous value of ones
+These common set bits are actually the bits that should be added to ‘twos’. So do bitwise XOR of the common set bits with ‘twos’. 
+‘twos’ also gets some extra bits that appear the third time. These extra bits are removed later. 
+Update ‘ones’ by doing XOR of new element with the previous value of ‘ones’. There may be some bits that appear 3rd time. These extra bits are also removed later.
+Both ‘ones’ and ‘twos’ contain those extra bits which appear 3rd time. Remove these extra bits by finding out common set bits in ‘ones’ and ‘twos’. 
+
+------------------------------------------------------------------CODE---------------------------------------------------------------
+class GFG {
+    static int getSingle(int arr[], int n)
+    {
+        int ones = 0, twos = 0;
+        int common_bit_mask;
+ 
+        for (int i = 0; i < n; i++) {
+        
+            /*"one & arr[i]" gives the bits that are there in
+            both 'ones' and new element from arr[]. We
+            add these bits to 'twos' using bitwise OR*/
+            
+            twos = twos | (ones & arr[i]);
+ 
+            /*"one & arr[i]" gives the bits that are
+            there in both 'ones' and new element from arr[].
+            We add these bits to 'twos' using bitwise OR*/
+            
+            ones = ones ^ arr[i];
+ 
+            /* The common bits are those bits which appear third time
+            So these bits should not be there in both 'ones' and 'twos'.
+            common_bit_mask contains all these bits as 0, so that the bits can
+            be removed from 'ones' and 'twos'*/
+            
+            common_bit_mask = ~(ones & twos);
+ 
+            /*Remove common bits (the bits that appear third time) from 'ones'*/
+            
+            ones &= common_bit_mask;
+ 
+            /*Remove common bits (the bits that appear third time) from 'twos'*/
+            twos &= common_bit_mask;
+        }
+        return ones;
+    }
+    // Driver method
+    public static void main(String args[])
+    {
+        int arr[] = { 3, 3, 2, 3 };
+        int n = arr.length;
+        System.out.println("The element with single occurrence is " + getSingle(arr, n));
+    }
+}
+
